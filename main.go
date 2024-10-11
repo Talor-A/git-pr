@@ -7,7 +7,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -28,8 +27,6 @@ const bodyTemplate = `
 <br>
 <br>
 `
-
-var regexpDraft = regexp.MustCompile(`(?i)\[draft]`)
 
 // select emojis
 
@@ -240,12 +237,6 @@ Hint: use "git add -A" and "git stash" to clean up the repository
 					"title": commit.Title,
 					"body":  bodyB.String(),
 				}))
-				isDraft := regexpDraft.MatchString(commit.Title)
-				if isDraft {
-					must(execGh("pr", "ready", strconv.Itoa(commit.PRNumber), "--undo"))
-				} else {
-					must(execGh("pr", "ready", strconv.Itoa(commit.PRNumber)))
-				}
 				if tags := commit.GetTags(config.Tags...); len(tags) > 0 {
 					must(execGh("pr", "edit", strconv.Itoa(commit.PRNumber), "--add-label", strings.Join(tags, ",")))
 				}

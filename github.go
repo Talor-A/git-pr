@@ -84,7 +84,7 @@ func githubCreatePRForCommit(commit *Commit, prev *Commit) error {
 	if prev != nil {
 		base = prev.GetRemoteRef()
 	}
-	args := []string{"pr", "create", "--title", commit.Title, "--body", "", "--head", commit.GetRemoteRef(), "--base", base}
+	args := []string{"pr", "create", "--draft", "--title", commit.Title, "--body", "", "--head", commit.GetRemoteRef(), "--base", base}
 	if tags := commit.GetTags(config.Tags...); len(tags) > 0 {
 		args = append(args, "--label", strings.Join(tags, ","))
 	}
