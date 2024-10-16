@@ -1,4 +1,4 @@
-module github.com/iOliverNguyen/git-pr
+module github.com/Talor-A/git-pr
 
 go 1.20
 
