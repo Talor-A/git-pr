@@ -19,16 +19,35 @@ const (
 	head         = "HEAD"
 )
 
-const bodyTemplate = `
-# Summary
+// Add function to get PR template
+func getPRTemplate() string {
+	// Try to get template from .github/pull_request_template.md
+	out, err := execGit("show", fmt.Sprintf("%v:%v", head, ".github/pull_request_template.md"))
+	if err == nil {
+		return out
+	}
 
-<br>
-<br>
-<br>
-<br>
-`
+	// Try to get template from .github/PULL_REQUEST_TEMPLATE.md
+	out, err = execGit("show", fmt.Sprintf("%v:%v", head, ".github/PULL_REQUEST_TEMPLATE.md"))
+	if err == nil {
+		return out
+	}
 
-// select emojis
+	// Try to get template from pull_request_template.md in root
+	out, err = execGit("show", fmt.Sprintf("%v:%v", head, "pull_request_template.md"))
+	if err == nil {
+		return out
+	}
+
+	// Try to get template from PULL_REQUEST_TEMPLATE.md in root
+	out, err = execGit("show", fmt.Sprintf("%v:%v", head, "PULL_REQUEST_TEMPLATE.md"))
+	if err == nil {
+		return out
+	}
+
+	// Fallback to minimal template if no template found
+	return "# Summary\n\n"
+}
 
 func main() {
 	config = LoadConfig()
@@ -196,8 +215,7 @@ Hint: use "git add -A" and "git stash" to clean up the repository
 					prLine()
 					prMessage()
 				} else if commit.Message == "" {
-
-					prf("%v\n\n\n\n\n\n\n\n", bodyTemplate) // TODO: config template
+					prf("%v\n\n\n\n\n\n\n\n", getPRTemplate()) // Use repo's PR template
 					prDelim()
 					prLine()
 					prMessage()
