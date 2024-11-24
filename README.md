@@ -16,13 +16,12 @@ PR. Read more at [the introduction article](https://olivernguyen.io/w/stacked.pr
 
 - Install [github-cli](https://cli.github.com/) and run `gh login`.
 - Install [git-branchless](https://github.com/arxanas/git-branchless) and run `git branchless init`.
-- Install git-pr and put `~/go/bin/git-pr` in your `$PATH`
+- Install git-pr, build, and add to your `$PATH`
 
   ```sh
   git clone https://github.com/Talor-A/git-pr
   cd git-pr
-  go build .
-  mv build/git-pr ~/bin  # add it to your $PATH
+  ./build.sh
   ```
 
 ## Usage
